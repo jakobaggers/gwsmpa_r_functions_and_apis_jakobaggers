@@ -40,16 +40,21 @@ Join together the election results and urban/suburban/rural tables above, and th
 
 ```{r}
 
-
+joined_dta <-
+  left_join(counties_elexresults, counties_rural_urban_suburban)
 
 
 ```
 
 ```{r}
 
+joined_dta <-
+  joined_dta %>% 
+  filter(state_code == "VA")
 
-
-
+joined_dta %>% 
+  group_by(rural_urban) %>% 
+  summarize(mean_vote = mean(pct_r_2020))
 
 ```
 
@@ -58,7 +63,9 @@ Now using the joined dataset, come up with two groupings you find interesting or
 (i.e. instead of for urban/rural, perhaps you want to look at pct of white college grads in Michigan, etc. If you're having trouble, you can stick with Virginia as your state.)
 
 ```{r}
-
+joined_dta %>% 
+  group_by(rural_urban, winner_2020) %>% 
+  summarize(count = n())
 
 
 
@@ -67,8 +74,10 @@ Now using the joined dataset, come up with two groupings you find interesting or
 
 ```{r}
 
-
-
+joined_dta %>% 
+  group_by(rural_urban) %>% 
+  summarize(sd_dem = sd(pct_d_2020),
+            sd_rep = sd(pct_r_2020))
 
 
 ```
